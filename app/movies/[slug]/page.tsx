@@ -1,4 +1,3 @@
-// app/movies/[slug]/page.tsx
 import { getMovie, getMovieReviews } from '@/lib/cosmic'
 import { notFound } from 'next/navigation'
 import MovieDetails from '@/components/MovieDetails'
@@ -25,7 +24,10 @@ export default async function MoviePage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-black">
       <MovieDetails movie={movie} />
-      <ReviewSection reviews={reviews} />
+      <ReviewSection 
+        reviews={reviews} 
+        movieTitle={movie.metadata?.title || movie.title || 'Unknown Movie'} 
+      />
     </div>
   )
 }

@@ -1,4 +1,3 @@
-// components/ReviewSection.tsx
 import { Review } from '@/types';
 
 interface ReviewSectionProps {
@@ -40,7 +39,9 @@ interface ReviewCardProps {
 }
 
 function ReviewCard({ review }: ReviewCardProps) {
-  const ratingNumber = parseInt(review.metadata.rating.key);
+  const ratingKey = review.metadata?.rating?.key;
+  const ratingNumber = ratingKey ? parseInt(ratingKey) : 0;
+  const reviewerName = review.metadata?.reviewer_name || 'Anonymous';
   
   return (
     <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
@@ -48,11 +49,11 @@ function ReviewCard({ review }: ReviewCardProps) {
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center">
             <span className="text-white font-bold text-lg">
-              {review.metadata.reviewer_name.charAt(0).toUpperCase()}
+              {reviewerName.charAt(0).toUpperCase()}
             </span>
           </div>
           <div>
-            <h4 className="text-white font-semibold">{review.metadata.reviewer_name}</h4>
+            <h4 className="text-white font-semibold">{reviewerName}</h4>
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -69,9 +70,9 @@ function ReviewCard({ review }: ReviewCardProps) {
                 ))}
               </div>
               <span className="text-gray-400 text-sm">
-                {review.metadata.rating.value}
+                {review.metadata?.rating?.value || 'Not rated'}
               </span>
-              {review.metadata.verified_purchase && (
+              {review.metadata?.verified_purchase && (
                 <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">
                   Verified
                 </span>
@@ -82,7 +83,7 @@ function ReviewCard({ review }: ReviewCardProps) {
       </div>
       
       <h3 className="text-white font-semibold mb-2">{review.title}</h3>
-      <p className="text-gray-300 leading-relaxed">{review.metadata.review_text}</p>
+      <p className="text-gray-300 leading-relaxed">{review.metadata?.review_text || 'No review text available.'}</p>
     </div>
   );
 }

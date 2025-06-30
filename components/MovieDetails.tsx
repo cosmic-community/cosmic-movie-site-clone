@@ -1,4 +1,3 @@
-// components/MovieDetails.tsx
 import { Movie } from '@/types';
 
 interface MovieDetailsProps {
@@ -6,8 +5,8 @@ interface MovieDetailsProps {
 }
 
 export default function MovieDetails({ movie }: MovieDetailsProps) {
-  const posterUrl = movie.metadata.poster_image?.imgix_url;
-  const genreColor = movie.metadata.genre?.metadata?.color || '#ffffff';
+  const posterUrl = movie.metadata?.poster_image?.imgix_url;
+  const genreColor = movie.metadata?.genre?.metadata?.color || '#ffffff';
 
   return (
     <div className="relative bg-gradient-to-r from-gray-900 to-black py-16">
@@ -18,7 +17,7 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
             {posterUrl && (
               <img
                 src={`${posterUrl}?w=600&h=900&fit=crop&auto=format,compress`}
-                alt={movie.metadata.title}
+                alt={movie.metadata?.title || movie.title || 'Movie poster'}
                 width={300}
                 height={450}
                 className="w-full max-w-sm mx-auto rounded-lg shadow-2xl"
@@ -29,7 +28,7 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
           {/* Movie Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-4 mb-4">
-              {movie.metadata.genre && (
+              {movie.metadata?.genre && (
                 <div 
                   className="w-2 h-12 rounded-full"
                   style={{ backgroundColor: genreColor }}
@@ -37,21 +36,21 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
               )}
               <div>
                 <h1 className="text-4xl md:text-6xl font-bold text-white mb-2">
-                  {movie.metadata.title}
+                  {movie.metadata?.title || movie.title}
                 </h1>
                 <div className="flex items-center space-x-4 text-gray-400">
-                  {movie.metadata.release_year && (
+                  {movie.metadata?.release_year && (
                     <span className="text-lg">{movie.metadata.release_year}</span>
                   )}
-                  {movie.metadata.rating?.value && (
+                  {movie.metadata?.rating?.value && (
                     <span className="px-2 py-1 bg-gray-700 rounded text-sm">
                       {movie.metadata.rating.value}
                     </span>
                   )}
-                  {movie.metadata.duration && (
+                  {movie.metadata?.duration && (
                     <span className="text-lg">{movie.metadata.duration}</span>
                   )}
-                  {movie.metadata.genre && (
+                  {movie.metadata?.genre && (
                     <span 
                       className="px-3 py-1 rounded-full text-sm font-medium"
                       style={{ 
@@ -59,7 +58,7 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
                         color: genreColor 
                       }}
                     >
-                      {movie.metadata.genre.metadata.name}
+                      {movie.metadata.genre.metadata?.name || 'Genre'}
                     </span>
                   )}
                 </div>
@@ -68,17 +67,17 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
 
             {/* Description */}
             <p className="text-gray-300 text-lg mb-8 max-w-3xl">
-              {movie.metadata.description}
+              {movie.metadata?.description}
             </p>
 
             {/* YouTube Trailer */}
-            {movie.metadata.youtube_url && (
+            {movie.metadata?.youtube_url && (
               <div className="mb-8">
                 <h3 className="text-xl font-semibold text-white mb-4">Watch Trailer</h3>
                 <div className="aspect-video max-w-2xl">
                   <iframe
                     src={`https://www.youtube.com/embed/${extractYouTubeId(movie.metadata.youtube_url)}`}
-                    title={`${movie.metadata.title} Trailer`}
+                    title={`${movie.metadata?.title || movie.title} Trailer`}
                     className="w-full h-full rounded-lg"
                     allowFullScreen
                   />
