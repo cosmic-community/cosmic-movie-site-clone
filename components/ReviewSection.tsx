@@ -1,47 +1,50 @@
-import { Review } from '@/types';
+import { Review } from '@/types'
+import ReviewForm from './ReviewForm'
 
 interface ReviewSectionProps {
-  reviews: Review[];
-  movieTitle: string;
+  reviews: Review[]
+  movieTitle: string
+  movieId: string
 }
 
-export default function ReviewSection({ reviews, movieTitle }: ReviewSectionProps) {
-  if (!reviews || reviews.length === 0) {
-    return (
-      <div className="bg-gray-900 py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8">Reviews</h2>
-          <p className="text-gray-400">No reviews available for {movieTitle} yet.</p>
-        </div>
-      </div>
-    );
-  }
-
+export default function ReviewSection({ reviews, movieTitle, movieId }: ReviewSectionProps) {
   return (
     <div className="bg-gray-900 py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-white mb-8">
-          Reviews ({reviews.length})
+          Reviews {reviews.length > 0 && `(${reviews.length})`}
         </h2>
         
-        <div className="grid gap-6">
-          {reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
-          ))}
-        </div>
+        {/* Review Form */}
+        <ReviewForm movieId={movieId} movieTitle={movieTitle} />
+        
+        {/* Existing Reviews */}
+        {reviews.length === 0 ? (
+          <div className="bg-gray-800 rounded-lg p-6 text-center">
+            <p className="text-gray-400 text-lg">
+              No reviews yet for {movieTitle}. Be the first to write a review!
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-6">
+            {reviews.map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
-  );
+  )
 }
 
 interface ReviewCardProps {
-  review: Review;
+  review: Review
 }
 
 function ReviewCard({ review }: ReviewCardProps) {
-  const ratingKey = review.metadata?.rating?.key;
-  const ratingNumber = ratingKey ? parseInt(ratingKey) : 0;
-  const reviewerName = review.metadata?.reviewer_name || 'Anonymous';
+  const ratingKey = review.metadata?.rating?.key
+  const ratingNumber = ratingKey ? parseInt(ratingKey) : 0
+  const reviewerName = review.metadata?.reviewer_name || 'Anonymous'
   
   return (
     <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
@@ -85,5 +88,5 @@ function ReviewCard({ review }: ReviewCardProps) {
       <h3 className="text-white font-semibold mb-2">{review.title}</h3>
       <p className="text-gray-300 leading-relaxed">{review.metadata?.review_text || 'No review text available.'}</p>
     </div>
-  );
+  )
 }

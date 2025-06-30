@@ -10,23 +10,21 @@ interface PageProps {
 export default async function MoviePage({ params }: PageProps) {
   const { slug } = await params
   
-  const [movie, reviews] = await Promise.all([
-    getMovie(slug),
-    getMovie(slug).then(movie => 
-      movie ? getMovieReviews(movie.id) : []
-    )
-  ])
+  const movie = await getMovie(slug)
 
   if (!movie) {
     notFound()
   }
+
+  const reviews = await getMovieReviews(movie.id)
 
   return (
     <div className="min-h-screen bg-black">
       <MovieDetails movie={movie} />
       <ReviewSection 
         reviews={reviews} 
-        movieTitle={movie.metadata?.title || movie.title || 'Unknown Movie'} 
+        movieTitle={movie.metadata?.title || movie.title || 'Unknown Movie'}
+        movieId={movie.id}
       />
     </div>
   )
