@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+  }
+
+  * {
+    border-color: theme('colors.netflix.gray');
+  }
+
+  body {
+    color: rgb(theme('colors.foreground'));
+    background: rgb(theme('colors.background'));
+    font-family: theme('fontFamily.sans');
+  }
+}
+
+@layer components {
+  .netflix-gradient {
+    background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%);
+  }
+  
+  .star-rating {
+    color: #ffd700;
+  }
+}
