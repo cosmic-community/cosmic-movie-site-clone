@@ -77,7 +77,7 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
                 <div className="aspect-video max-w-2xl">
                   <iframe
                     src={`https://www.youtube.com/embed/${extractYouTubeId(movie.metadata.youtube_url)}`}
-                    title={`${movie.metadata?.title || movie.title} Trailer`}
+                    title={`${movie.metadata?.title || movie.title || 'Movie'} Trailer`}
                     className="w-full h-full rounded-lg"
                     allowFullScreen
                   />
@@ -94,5 +94,5 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
 function extractYouTubeId(url: string): string {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : '';
+  return (match && match[2] && match[2].length === 11) ? match[2] : '';
 }
